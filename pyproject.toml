@@ -4,6 +4,7 @@ version = "0.0.0"
 description = ""
 authors = []
 readme = "README.md"
+license = "MIT"
 # TODO: Should we make this a package?
 package-mode = false
 

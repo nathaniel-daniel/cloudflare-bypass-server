@@ -9,9 +9,11 @@ The server will respond with the cf_clearance cookie and the useragent, which ca
 This server currently only implements one endpoint.
 
 ### `POST /api/bypass`
+This endpoint allows applications to request information to bypass a url.
+
 #### Request
 ```
-POST /api/bypass
+POST /api/bypass?url=<url>
 
 Query Params
 `url`: The url that the server needs to bypass.
@@ -22,6 +24,6 @@ The response is encoded as JSON.
 ```json
 {
     "user_agent": "<The user agent to use for requests>",
-    "cf_clearance": "<The cookie to use for requests>",
+    "cf_clearance": "<The cookie to use for requests. This is a full cookie string, not just a cookie value.>",
 }
 ```
