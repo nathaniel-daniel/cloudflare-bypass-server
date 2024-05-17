@@ -4,6 +4,8 @@ version = "0.0.0"
 description = ""
 authors = []
 readme = "README.md"
+# TODO: Should we make this a package?
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"

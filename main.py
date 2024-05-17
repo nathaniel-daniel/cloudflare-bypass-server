@@ -17,7 +17,7 @@ executor = ThreadPoolExecutor(2)
 
 def scraper(url):
     with SB(uc=True, headless=True) as sb:
-        sb.driver.uc_open_with_tab(url)
+        sb.driver.uc_open_with_reconnect(url, reconnect_time=2)
         sb.sleep(1.2)
         
         user_agent = sb.get_user_agent()
