@@ -18,7 +18,10 @@ executor = ThreadPoolExecutor(2)
 def scraper(url):
     with SB(uc=True, headless=True) as sb:
         sb.driver.uc_open_with_reconnect(url, reconnect_time=2)
-        sb.sleep(1.2)
+        
+        sb.switch_to_frame("iframe")
+        sb.driver.uc_click("span")
+        sb.assert_element_absent("[name=cf-turnstile-response]", timeout=3)
         
         user_agent = sb.get_user_agent()
         cookies = sb.driver.get_cookies()
