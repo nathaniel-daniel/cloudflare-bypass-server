@@ -12,11 +12,12 @@ import tornado.options
 
 tornado.options.define("port", default="8080", help="The port to run on")
 tornado.options.define("debug", default=False, help="Whether the server should be run in debug mode")
+tornado.options.define("user-agent", default=None, help="override the user agent")
 
 executor = ThreadPoolExecutor(2)
 
 def scraper(url):
-    with SB(uc=True, headless=True) as sb:
+    with SB(uc=True, headless=True, agent=tornado.options.options.user_agent) as sb:
         sb.driver.uc_open_with_reconnect(url, reconnect_time=3)
         
         sb.switch_to_frame("iframe")
