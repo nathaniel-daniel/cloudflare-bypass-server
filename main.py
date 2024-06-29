@@ -9,19 +9,31 @@ from datetime import datetime
 from email.utils import formatdate
 from time import mktime
 import tornado.options
+import platform
 
 tornado.options.define("port", default="8080", help="The port to run on")
 tornado.options.define("debug", default=False, help="Whether the server should be run in debug mode")
-tornado.options.define("user-agent", default=None, help="override the user agent")
+tornado.options.define("user-agent", default=None, help="Override the user agent")
+tornado.options.define("xvfb", default=False, help="Use the xvfb for the browser. Only works on Linux.")
 
 executor = ThreadPoolExecutor(2)
 
 def scraper(url):
-    with SB(uc=True, headless=True, agent=tornado.options.options.user_agent) as sb:
+    use_xvfb = tornado.options.options.xvfb    
+    with SB(
+        uc=True, 
+        headless=True, 
+        agent=tornado.options.options.user_agent,
+        xvfb=use_xvfb,
+    ) as sb:
         sb.driver.uc_open_with_reconnect(url, reconnect_time=3)
         
-        sb.switch_to_frame("iframe")
-        sb.driver.uc_click("span")
+        if use_xvfb:
+            sb.uc_gui_handle_cf()
+        else:
+            sb.switch_to_frame("iframe")
+            sb.driver.uc_click("span")
+        
         sb.assert_element_absent('[name="cf-turnstile-response"]', timeout=3)
         sb.sleep(3)
         
@@ -108,6 +120,10 @@ def make_app():
 
 async def main():
     tornado.options.parse_command_line()
+    
+    use_xvfb = tornado.options.options.xvfb
+    if use_xvfb and platform.system() != 'Linux':
+        raise RuntimeError('The xvfb option only works on Linux')
     
     app = make_app()
     app.listen(tornado.options.options.port)
