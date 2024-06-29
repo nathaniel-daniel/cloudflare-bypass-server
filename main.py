@@ -19,10 +19,13 @@ tornado.options.define("xvfb", default=False, help="Use the xvfb for the browser
 executor = ThreadPoolExecutor(2)
 
 def scraper(url):
-    use_xvfb = tornado.options.options.xvfb    
+    headless = True
+    use_xvfb = tornado.options.options.xvfb 
+    if use_xvfb:
+        headless = False
     with SB(
         uc=True, 
-        headless=True, 
+        headless=headless, 
         agent=tornado.options.options.user_agent,
         xvfb=use_xvfb,
     ) as sb:

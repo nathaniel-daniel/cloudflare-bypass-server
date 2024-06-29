@@ -12,6 +12,7 @@ package-mode = false
 python = "^3.11"
 tornado = "^6.4"
 seleniumbase = "^4.22.3"
+pyautogui = { version = "^0.9.54", platform = "linux" }
 
 
 [build-system]
