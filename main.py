@@ -32,7 +32,7 @@ def scraper(url):
         sb.driver.uc_open_with_reconnect(url, reconnect_time=3)
         
         if use_xvfb:
-            sb.uc_gui_handle_cf()
+            sb.uc_gui_click_cf()
         else:
             sb.switch_to_frame("iframe")
             sb.driver.uc_click("span")
