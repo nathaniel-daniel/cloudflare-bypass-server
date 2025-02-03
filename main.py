@@ -29,16 +29,16 @@ def scraper(url):
         agent=tornado.options.options.user_agent,
         xvfb=use_xvfb,
     ) as sb:
-        sb.driver.uc_open_with_reconnect(url, reconnect_time=3)
+        sb.uc_open_with_reconnect(url, reconnect_time=4)
         
         if use_xvfb:
-            sb.uc_gui_click_cf()
+            sb.uc_gui_handle_captcha()
         else:
             sb.switch_to_frame("iframe")
             sb.driver.uc_click("span")
         
-        sb.assert_element_absent('[name="cf-turnstile-response"]', timeout=3)
-        sb.sleep(3)
+        sb.assert_element_absent('[name="cf-turnstile-response"]', timeout=4)
+        sb.sleep(4)
         
         user_agent = sb.get_user_agent()
         cookies = sb.driver.get_cookies()
