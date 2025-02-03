@@ -1,20 +1,11 @@
-[tool.poetry]
+[project]
 name = "cloudflare-bypass-server"
 version = "0.0.0"
 description = ""
-authors = []
 readme = "README.md"
-license = "MIT"
-# TODO: Should we make this a package?
-package-mode = false
-
-[tool.poetry.dependencies]
-python = "^3.11"
-tornado = "^6.4"
-seleniumbase = "^4.30.4"
-pyautogui = { version = "^0.9.54", platform = "linux" }
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.11"
+dependencies = [
+    "pyautogui>=0.9.54 ; sys_platform == 'linux'",
+    "seleniumbase>=4.34.6",
+    "tornado>=6.4.2",
+]
