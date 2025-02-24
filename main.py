@@ -9,6 +9,7 @@ from datetime import datetime
 from email.utils import formatdate
 from time import mktime
 import tornado.options
+import tornado.log
 import platform
 
 tornado.options.define("port", default="8080", help="The port to run on")
@@ -33,28 +34,19 @@ def scraper(url):
         sb.sleep(2)
         
         if use_xvfb:
-            # sb.uc_gui_click_captcha()
-            # sb.sleep(2)
-            # sb.uc_gui_handle_captcha()
-            sb.activate_cdp_mode(url)
             sb.uc_gui_click_captcha()
             sb.sleep(2)
+            sb.uc_gui_handle_captcha()
         else:
             sb.switch_to_frame("iframe")
             sb.driver.uc_click("span")
-        
-        if use_xvfb:
-            sb.cdp.assert_element_absent('[name="cf-turnstile-response"]', timeout=4)
-        else:
-            sb.assert_element_absent('[name="cf-turnstile-response"]', timeout=4)
         sb.sleep(4)
         
-        if use_xvfb:
-            user_agent = sb.get_user_agent()
-            cookies = sb.driver.get_cookies()
-        else:
-            user_agent = sb.cdp.get_user_agent()
-            cookies = sb.cdp.get_all_cookies()
+        sb.assert_element_absent('[name="cf-turnstile-response"]', timeout=4)
+        sb.sleep(4)
+        
+        user_agent = sb.get_user_agent()
+        cookies = sb.driver.get_cookies()
         
         cf_clearance = get_cookie_by_name(cookies, 'cf_clearance')
         
