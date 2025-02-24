@@ -30,6 +30,7 @@ def scraper(url):
         xvfb=use_xvfb,
     ) as sb:
         sb.uc_open_with_reconnect(url, reconnect_time=4)
+        sb.sleep(2)
         
         if use_xvfb:
             sb.uc_gui_handle_captcha()
