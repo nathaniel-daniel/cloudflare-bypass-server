@@ -33,9 +33,12 @@ def scraper(url):
         sb.sleep(2)
         
         if use_xvfb:
+            # sb.uc_gui_click_captcha()
+            # sb.sleep(2)
+            # sb.uc_gui_handle_captcha()
+            sb.activate_cdp_mode(url)
             sb.uc_gui_click_captcha()
             sb.sleep(2)
-            sb.uc_gui_handle_captcha()
         else:
             sb.switch_to_frame("iframe")
             sb.driver.uc_click("span")
