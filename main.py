@@ -43,11 +43,19 @@ def scraper(url):
             sb.switch_to_frame("iframe")
             sb.driver.uc_click("span")
         
-        sb.assert_element_absent('[name="cf-turnstile-response"]', timeout=4)
+        if use_xvfb:
+            sb.cdp.assert_element_absent('[name="cf-turnstile-response"]', timeout=4)
+        else:
+            sb.assert_element_absent('[name="cf-turnstile-response"]', timeout=4)
         sb.sleep(4)
         
-        user_agent = sb.get_user_agent()
-        cookies = sb.driver.get_cookies()
+        if use_xvfb:
+            user_agent = sb.get_user_agent()
+            cookies = sb.driver.get_cookies()
+        else:
+            user_agent = sb.cdp.get_user_agent()
+            cookies = sb.cdp.get_all_cookies()
+        
         cf_clearance = get_cookie_by_name(cookies, 'cf_clearance')
         
     return {
